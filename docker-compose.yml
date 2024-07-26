@@ -1,0 +1,88 @@
+version: '0.1.0'
+services:
+  namenode-active:
+    image: ubuntu:22.04
+    container_name: namenode-active
+    privileged: true
+    volumes:
+      - ./namenode/active:/workspace
+      - ./public/authorized_keys:/root/.ssh/authorized_keys
+      - ./public:/public
+    entrypoint: /workspace/entrypoint.sh
+    hostname: nna
+    ports:
+      - "50070:50070"
+    networks:
+      hadoop_net:
+        ipv4_address: 172.16.0.2
+
+  # namenode-standby:
+  #   image: ubuntu:22.04
+  #   container_name: namenode-standby
+  #   privileged: true
+  #   volumes:
+  #     - ./namenode/standby:/workspace
+  #     - ./authorized_keys:/root/.ssh/authorized_keys
+  #     - ./public:/public
+  #   entrypoint: /workspace/entrypoint.sh
+  #   hostname: nns
+  #   ports:
+  #     - "50071:50070"
+  #   networks:
+  #     hadoop_net:
+  #       ipv4_address: 172.16.0.3
+  
+  datanode1:
+    image: ubuntu:22.04
+    container_name: datanode1
+    privileged: true
+    volumes:
+      - ./datanode/datanode1:/workspace
+      - ./public/authorized_keys:/root/.ssh/authorized_keys
+      - ./public:/public
+    entrypoint: /workspace/entrypoint.sh
+    hostname: dn1
+    ports:
+      - "50075:50075"
+    networks:
+      hadoop_net:
+        ipv4_address: 172.16.0.4
+    
+  datanode2:
+    image: ubuntu:22.04
+    container_name: datanode2
+    privileged: true
+    volumes:
+      - ./datanode/datanode2:/workspace
+      - ./public/authorized_keys:/root/.ssh/authorized_keys
+      - ./public:/public
+    entrypoint: /workspace/entrypoint.sh
+    hostname: dn2
+    ports:
+      - "50076:50075"
+    networks:
+      hadoop_net:
+        ipv4_address: 172.16.0.5
+
+  datanode3:
+    image: ubuntu:22.04
+    container_name: datanode3
+    privileged: true
+    volumes:
+      - ./datanode/datanode3:/workspace
+      - ./public/authorized_keys:/root/.ssh/authorized_keys
+      - ./public:/public
+    entrypoint: /workspace/entrypoint.sh
+    hostname: dn3
+    ports:
+      - "50077:50075"
+    networks:
+      hadoop_net:
+        ipv4_address: 172.16.0.6
+
+networks:
+  hadoop_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.0.0/16

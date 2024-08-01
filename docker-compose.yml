@@ -11,26 +11,28 @@ services:
     entrypoint: /workspace/entrypoint.sh
     hostname: nna
     ports:
-      - "50070:50070"
+      - "9870:9870"
     networks:
-      hadoop_net:
+      hdfs_net:
         ipv4_address: 172.16.0.2
 
-  # namenode-standby:
-  #   image: ubuntu:22.04
-  #   container_name: namenode-standby
-  #   privileged: true
-  #   volumes:
-  #     - ./namenode/standby:/workspace
-  #     - ./authorized_keys:/root/.ssh/authorized_keys
-  #     - ./public:/public
-  #   entrypoint: /workspace/entrypoint.sh
-  #   hostname: nns
-  #   ports:
-  #     - "50071:50070"
-  #   networks:
-  #     hadoop_net:
-  #       ipv4_address: 172.16.0.3
+  namenode-standby:
+    image: ubuntu:22.04
+    container_name: namenode-standby
+    privileged: true
+    volumes:
+      - ./namenode/standby:/workspace
+      - ./public/authorized_keys:/root/.ssh/authorized_keys
+      - ./public:/public
+    entrypoint: /workspace/entrypoint.sh
+    hostname: nns
+    ports:
+      - "9871:9870"
+    networks:
+      hdfs_net:
+        ipv4_address: 172.16.0.3
+    depends_on:
+      - namenode-active
   
   datanode1:
     image: ubuntu:22.04
@@ -38,14 +40,15 @@ services:
     privileged: true
     volumes:
       - ./datanode/datanode1:/workspace
+      - ./datanode/datanode_proto/entrypoint.sh:/workspace/entrypoint.sh
       - ./public/authorized_keys:/root/.ssh/authorized_keys
       - ./public:/public
     entrypoint: /workspace/entrypoint.sh
     hostname: dn1
     ports:
-      - "50075:50075"
+      - "9864:9864"
     networks:
-      hadoop_net:
+      hdfs_net:
         ipv4_address: 172.16.0.4
     
   datanode2:
@@ -54,14 +57,15 @@ services:
     privileged: true
     volumes:
       - ./datanode/datanode2:/workspace
+      - ./datanode/datanode_proto/entrypoint.sh:/workspace/entrypoint.sh
       - ./public/authorized_keys:/root/.ssh/authorized_keys
       - ./public:/public
     entrypoint: /workspace/entrypoint.sh
     hostname: dn2
     ports:
-      - "50076:50075"
+      - "9865:9864"
     networks:
-      hadoop_net:
+      hdfs_net:
         ipv4_address: 172.16.0.5
 
   datanode3:
@@ -70,19 +74,76 @@ services:
     privileged: true
     volumes:
       - ./datanode/datanode3:/workspace
+      - ./datanode/datanode_proto/entrypoint.sh:/workspace/entrypoint.sh
       - ./public/authorized_keys:/root/.ssh/authorized_keys
       - ./public:/public
     entrypoint: /workspace/entrypoint.sh
     hostname: dn3
     ports:
-      - "50077:50075"
+      - "9866:9864"
     networks:
-      hadoop_net:
+      hdfs_net:
         ipv4_address: 172.16.0.6
 
+  # zookeeper1:
+  #   image: ubuntu:22.04
+  #   container_name: zk1
+  #   privileged: true
+  #   volumes:
+  #     - ./zookeeper/zookeeper1:/workspace
+  #     - ./zookeeper/zookeeper_proto/entrypoint.sh:/workspace/entrypoint.sh
+  #     - ./public/authorized_keys:/root/.ssh/authorized_keys
+  #     - ./public:/public
+  #   entrypoint: /workspace/entrypoint.sh
+  #   hostname: zk1
+  #   ports:
+  #     - "2181:2181"
+  #   networks:
+  #     hdfs_net:
+  #       ipv4_address: 172.17.0.2
+  
+  # zookeeper2:
+  #   image: ubuntu:22.04
+  #   container_name: zk2
+  #   privileged: true
+  #   volumes:
+  #     - ./zookeeper/zookeeper2:/workspace
+  #     - ./zookeeper/zookeeper_proto/entrypoint.sh:/workspace/entrypoint.sh
+  #     - ./public/authorized_keys:/root/.ssh/authorized_keys
+  #     - ./public:/public
+  #   entrypoint: /workspace/entrypoint.sh
+  #   hostname: zk2
+  #   ports:
+  #     - "2182:2181"
+  #   networks:
+  #     hdfs_net:
+  #       ipv4_address: 172.17.0.3
+
+  # zookeeper3:
+  #   image: ubuntu:22.04
+  #   container_name: zk3
+  #   privileged: true
+  #   volumes:
+  #     - ./zookeeper/zookeeper3:/workspace
+  #     - ./zookeeper/zookeeper_proto/entrypoint.sh:/workspace/entrypoint.sh
+  #     - ./public/authorized_keys:/root/.ssh/authorized_keys
+  #     - ./public:/public
+  #   entrypoint: /workspace/entrypoint.sh
+  #   hostname: zk3
+  #   ports:
+  #     - "2183:2181"
+  #   networks:
+  #     hdfs_net:
+  #       ipv4_address: 172.17.0.4
+
 networks:
-  hadoop_net:
+  hdfs_net:
     driver: bridge
     ipam:
       config:
         - subnet: 172.16.0.0/16
+  # zkfc_net:
+  #   driver: bridge
+  #   ipam:
+  #     config:
+  #       - subnet: 172.17.0.0/16

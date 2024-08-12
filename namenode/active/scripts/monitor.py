@@ -25,15 +25,15 @@ with open(csv_filename, mode='w', newline='') as file:
 # 定义执行测试并记录结果的函数
 def run_benchmark():
     result = subprocess.run(
-        # ['hadoop', 'org.apache.hadoop.hdfs.server.namenode.NNThroughputBenchmark', 
-        #  '-fs', 'hdfs://nna:9000', '-op', 'open', '-threads','3', '-files', '1000', 
-        #  '-filesPerDir', '100000','-useExisting' ,'-keepResults'], 
+        ['hadoop', 'org.apache.hadoop.hdfs.server.namenode.NNThroughputBenchmark', 
+         '-fs', 'hdfs://nna:9000', '-op', 'open', '-threads','1000', '-files', '10000', 
+         '-filesPerDir', '100000','-useExisting' ,'-keepResults'], 
         # ['hadoop', 'org.apache.hadoop.hdfs.server.namenode.NNThroughputBenchmark', 
         #  '-fs', 'hdfs://nna:9000', '-op', 'open', '-threads','10', '-files', '1000', 
         #  '-filesPerDir', '1000000'],
-        ['hadoop', 'org.apache.hadoop.hdfs.server.namenode.NNThroughputBenchmark', 
-         '-fs', 'hdfs://nna:9000', '-op', 'create', '-threads','3', '-files', '1000', 
-         '-filesPerDir', '1000000'],
+        # ['hadoop', 'org.apache.hadoop.hdfs.server.namenode.NNThroughputBenchmark', 
+        #  '-fs', 'hdfs://nna:9000', '-op', 'create', '-threads','3', '-files', '1000', 
+        #  '-filesPerDir', '1000000'],
         capture_output=True, text=True
     )
     # print(result.stderr)

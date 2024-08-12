@@ -17,6 +17,14 @@ docker exec -it namenode-active bash
 source /etc/profile
 hadoop namenode -format
 /usr/local/hadoop/sbin/start-all.sh
-# Then a cluster with YARN is settled up, you may try NNThroughputBenchmark on this cluster
+# Then a cluster with node managers and resource managers of YARN is settled up, we can check the node list by:
+
+yarn node -list
+
+# Try NNThroughputBenchmark on this cluster:
 hadoop org.apache.hadoop.hdfs.server.namenode.NNThroughputBenchmark -fs hdfs://nna:9000 -op open -threads 1000 -files 100000
+
+# Also try various benchmarks on this cluster:
+
+hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-3.3.6-tests.jar nnbenchWithoutMR -baseDir /benchmarks/nnbench -numFiles 100 -replicationFactorPerFile 2 -blocksPerFile 1 -bytesPerBlock 67108864 -operation createWrite
 ```

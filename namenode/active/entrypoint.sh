@@ -4,7 +4,9 @@ rm -rf /workspace/data
 
 # Install necessary packages
 apt-get update
-apt-get install -y ssh openjdk-8-jdk vim htop net-tools iputils-ping tar wget curl psmisc
+apt-get install -y ssh openjdk-8-jdk vim htop net-tools iputils-ping tar wget curl psmisc python3 pip
+
+pip install matplotlib pandas
 
 # Enable non-password ssh login within cluster
 service ssh restart

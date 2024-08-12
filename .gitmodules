@@ -1,0 +1,4 @@
+[submodule "hadoop-source"]
+	path = hadoop-source
+	url = https://github.com/apache/hadoop.git
+	branch = branch-3.3.6
